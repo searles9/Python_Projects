@@ -18,14 +18,14 @@ class Person:
              # Mifflin-St Jeor Equation:
              bmr = (10*self.weightkg) + (6.25*self.heightcm) - (5*self.age) - 161
              return round(bmr)
-         else:
-             print('An error occured. The program could not find your gender.')
 
      def lose_weight(self, ammount):
-         pass
+         self.weightkg -= (0.453592 * ammount) # 0.453592 kg is 1lb 
+         print('Lost {ammount} lbs'.format(ammount = ammount))
 
      def gain_weight(self, ammount):
-         pass
+         self.weight += (0.453592 * ammount) # 0.453592 kg is 1lb 
+         print('Gained {ammount} lbs'.format(ammount = ammount))
 
      @classmethod
      def get_user_input(self):
@@ -87,7 +87,15 @@ if __name__ == "__main__":
     person1 = Person.get_user_input()
     print(person1)
     print(person1.get_bmr())
+    person1.lose_weight(10) 
+    print(person1.get_bmr())
 
-    # for loop to get the weekly calorie limit up to your goal weight
+    
+   # make instance of person - gets info
+
+   # get goal weight
+
+   # for loop to get the calories needed at each weight (per week)
+
 
 
