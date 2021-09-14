@@ -44,6 +44,24 @@ class Person:
 
      def goal_weight_in_lbs(self):
          return convert_unit(self.goalweightkg,'kg','lb')
+
+     def cals_to_low(self):
+         if self.gender == 'Male':
+             # 1,500 minimum to stay healthy 
+             if self.calculate_cals() <= 1500:
+                 return True
+             else:
+                 return False
+         elif self.gender == 'Female':
+             # 1,200 minimum to stay healthy
+             if self.calculate_cals() <= 1200:
+                 return True
+             else:
+                 return False
+                 
+     def increase_activitylvl(self):
+         pass
+
          
 
      @classmethod
@@ -151,11 +169,23 @@ if __name__ == "__main__":
    thestartweight = int(donovan.weight_in_lbs())
    weightperweek = 2
    counter = 0
-   for weight in range(thegoalweight ,thestartweight,weightperweek):
-       counter += 1
-       print(f"Week {counter}: {donovan.calculate_cals()}")
-       donovan.lose_weight(weightperweek)
-       print(int(donovan.weight_in_lbs()))
-
-
+   print("\n")
+   print(f"* Your starting weight is: {thestartweight} lbs")
+   print(f"* Your starting activity level is: {str(donovan.activitylvl.replace('_',' '))}")
+   if thestartweight == thegoalweight:
+       print(f"Congrats you have reached your goal weight of {thegoalweight} lbs")
+   elif thestartweight < thegoalweight:
+       # gain weight 
+       for weight in range(thegoalweight ,thestartweight,weightperweek):
+           counter += 1
+           weightendofweek = (int(donovan.weight_in_lbs())+weightperweek)
+           print(f"Week {counter}: {donovan.calculate_cals()} | Weight at the end of the week: {weightendofweek}")
+           donovan.gain_weight(weightperweek)
+   elif thestartweight > thegoalweight:
+       # lose weight
+       for weight in range(thegoalweight ,thestartweight,weightperweek):
+           counter += 1
+           weightendofweek = (int(donovan.weight_in_lbs())-weightperweek)
+           print(f"Week {counter}: {donovan.calculate_cals()} | Weight at the end of the week: {weightendofweek}")
+           donovan.lose_weight(weightperweek)
 
