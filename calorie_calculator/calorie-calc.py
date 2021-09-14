@@ -23,11 +23,11 @@ class Person:
 
      def lose_weight(self, ammount):
          self.weightkg -= (0.453592 * ammount) # 0.453592 kg is 1lb 
-         print('- {ammount} lbs'.format(ammount = ammount))
+         #print('- {ammount} lbs'.format(ammount = ammount))
 
      def gain_weight(self, ammount):
          self.weight += (0.453592 * ammount) # 0.453592 kg is 1lb 
-         print('+ {ammount} lbs'.format(ammount = ammount))
+         #print('+ {ammount} lbs'.format(ammount = ammount))
 
      def calculate_cals(self):
          activity={
@@ -39,6 +39,12 @@ class Person:
         }
          return int(round((self.get_bmr() * activity[self.activitylvl])))
 
+     def weight_in_lbs(self):
+         return convert_unit(self.weightkg,'kg','lb')
+
+     def goal_weight_in_lbs(self):
+         return convert_unit(self.goalweightkg,'kg','lb')
+         
 
      @classmethod
      def get_user_input(self):
@@ -62,6 +68,8 @@ def convert_unit(fromvalue,fromunit,tounit):
     # Weight
     elif fromunit == "lb" and tounit == "kg":
         return float(fromvalue)/2.2046
+    elif fromunit == "kg" and tounit == "lb":
+        return float(fromvalue)/0.45359237
 #----------------------------------------------------------------
 # GET INPUT FOR CLASS OBJECT
 def get_heightcm():
@@ -138,10 +146,16 @@ def get_activity_level():
 if __name__ == "__main__":
    # make instance of person - gets info
    donovan = Person.get_user_input()
-   # get goal weight
-   print(donovan.goalweightkg)
-   cals = donovan.calculate_cals()
-   print(cals)
    # for loop to get the calories needed at each weight (per week)
+   thegoalweight = int(donovan.goal_weight_in_lbs())
+   thestartweight = int(donovan.weight_in_lbs())
+   weightperweek = 2
+   counter = 0
+   for weight in range(thegoalweight ,thestartweight,weightperweek):
+       counter += 1
+       print(f"Week {counter}: {donovan.calculate_cals()}")
+       donovan.lose_weight(weightperweek)
+       print(int(donovan.weight_in_lbs()))
+
 
 
