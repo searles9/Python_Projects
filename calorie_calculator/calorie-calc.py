@@ -1,10 +1,12 @@
 # Calorie Calculator
 class Person:
-     def __init__(self, weightkg, heightcm, age, gender):
+     def __init__(self, weightkg, heightcm, age, gender,goalweightkg,activitylvl):
          self.weightkg = weightkg
          self.heightcm = heightcm
          self.age = age
          self.gender = gender
+         self.goalweightkg = goalweightkg
+         self.activitylvl = activitylvl
     
      def __str__(self):
          return "{age} year old {gender} who is {heightcm:.2f} cm's tall and weighs {weight:.2f} kg".format(age=self.age,gender=self.gender,heightcm=self.heightcm,weight=self.weightkg)
@@ -27,18 +29,16 @@ class Person:
          self.weight += (0.453592 * ammount) # 0.453592 kg is 1lb 
          print('+ {ammount} lbs'.format(ammount = ammount))
 
-     def calculate_cals(self,activity_level):
+     def calculate_cals(self):
          activity={
             'sedentary':1.2, # Sedentary = BMR x 1.2 (little or no exercise, desk job) 
             'lightly_active':1.375,  # Lightly active = BMR x 1.375 (light exercise/ sports 1-3 days/week) 
             'moderately_active':1.55, # Moderately active = BMR x 1.55 (moderate exercise/ sports 6-7 days/week) 
             'very_active':1.725, # Very active = BMR x 1.725 (hard exercise every day, or exercising 2 xs/day)  
             'extra_active':1.9 # Extra active = BMR x 1.9 (hard exercise 2 or more times per day, or training for marathon, or triathlon, etc.
-           }
-         return int(round((self.get_bmr() * activity[activity_level])))
+        }
+         return int(round((self.get_bmr() * activity[self.activitylvl])))
 
-
-         pass
 
      @classmethod
      def get_user_input(self):
@@ -46,7 +46,9 @@ class Person:
          weightkg = get_weightkg()
          age = get_age()
          gender = get_gender()
-         return self(weightkg,heightcm,age,gender)
+         goalweightkg = get_goal_weight()
+         activitylvl = get_activity_level()
+         return self(weightkg,heightcm,age,gender,goalweightkg,activitylvl)
 #----------------------------------------------------------------
 # UNIT CONVERTER
 def convert_unit(fromvalue,fromunit,tounit):
@@ -61,7 +63,7 @@ def convert_unit(fromvalue,fromunit,tounit):
     elif fromunit == "lb" and tounit == "kg":
         return float(fromvalue)/2.2046
 #----------------------------------------------------------------
-# GET INPUT
+# GET INPUT FOR CLASS OBJECT
 def get_heightcm():
     heightft = ''
     while heightft not in range(0,10):
@@ -94,9 +96,6 @@ def get_gender():
         else: 
             continue
 
-def get_activity_level():
-    pass
-
 def get_goal_weight():
     # returns weight in kg
     while True:
@@ -107,7 +106,30 @@ def get_goal_weight():
         except:
             print("Please enter a valid weight: example...140 ")
             continue
+
+def get_activity_level():
+    activity={
+             1:'sedentary',
+             2:'lightly_active',
+             3:'moderately_active',
+             4:'very_active',
+             5:'extra_active'
+    }
+    print("\n")
+    print("1 - Sedentary / little or no exercise, desk job")
+    print("2 - Lightly active / light exercise/ sports 1-3 days/week")
+    print("3 - Moderately active / moderate exercise/ sports 6-7 days/week")
+    print("4 - Very active / hard exercise every day, or exercising 2 xs/day")
+    print("5 - Extra active / hard exercise 2 or more times per day, or training for marathon, or triathlon, etc.")
+    print("\n")
+    number = 0
+    while number not in range(1,6):
+        number = int(input("Please enter the number associated with your activity level: "))
+    return activity[number]
+
+
 #----------------------------------------------------------------  
+# GET INPUT - GENERAL FUNCTION
 
 
 #----------------------------------------------------------------  
@@ -117,17 +139,9 @@ if __name__ == "__main__":
    # make instance of person - gets info
    donovan = Person.get_user_input()
    # get goal weight
-   goalweight = get_goal_weight()
-   print(goalweight)
-
+   print(donovan.goalweightkg)
+   cals = donovan.calculate_cals()
+   print(cals)
    # for loop to get the calories needed at each weight (per week)
-
-
-
-# for testing
-#print(person1)
-#print(person1.get_bmr())
-#person1.lose_weight(10) 
-#print(person1.get_bmr())
 
 
