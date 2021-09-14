@@ -83,14 +83,13 @@ def get_gender():
 
     
 if __name__ == "__main__":
-    pass
     person1 = Person.get_user_input()
     print(person1)
     print(person1.get_bmr())
     person1.lose_weight(10) 
     print(person1.get_bmr())
 
-    
+
    # make instance of person - gets info
 
    # get goal weight
