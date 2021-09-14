@@ -13,6 +13,7 @@ python calorie-calc.py
 * Once you run the script it asks you for some information and then proceeds to calculate the info.
 
 # Things to add:
+* activity multipliers to show accurate cals needed
 * a function to get someones goal wieght
 * logic that gets the calories for someone at each week up to thier goal weight (for loop)
 * a function to get the BMI and return if the BMI is considered underweight or not
