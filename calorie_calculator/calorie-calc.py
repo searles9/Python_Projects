@@ -1,5 +1,21 @@
 # Calorie Calculator
 class Person:
+     activitymultiplier={
+            'sedentary':1.2, # Sedentary = BMR x 1.2 (little or no exercise, desk job) 
+            'lightly_active':1.375,  # Lightly active = BMR x 1.375 (light exercise/ sports 1-3 days/week) 
+            'moderately_active':1.55, # Moderately active = BMR x 1.55 (moderate exercise/ sports 6-7 days/week) 
+            'very_active':1.725, # Very active = BMR x 1.725 (hard exercise every day, or exercising 2 xs/day)  
+            'extra_active':1.9 # Extra active = BMR x 1.9 (hard exercise 2 or more times per day, or training for marathon, or triathlon, etc.
+        }
+     activityrank={
+             1:'sedentary',
+             2:'lightly_active',
+             3:'moderately_active',
+             4:'very_active',
+             5:'extra_active'
+         }
+      
+
      def __init__(self, weightkg, heightcm, age, gender,goalweightkg,activitylvl):
          self.weightkg = weightkg
          self.heightcm = heightcm
@@ -30,14 +46,7 @@ class Person:
          #print('+ {ammount} lbs'.format(ammount = ammount))
 
      def calculate_cals(self):
-         activity={
-            'sedentary':1.2, # Sedentary = BMR x 1.2 (little or no exercise, desk job) 
-            'lightly_active':1.375,  # Lightly active = BMR x 1.375 (light exercise/ sports 1-3 days/week) 
-            'moderately_active':1.55, # Moderately active = BMR x 1.55 (moderate exercise/ sports 6-7 days/week) 
-            'very_active':1.725, # Very active = BMR x 1.725 (hard exercise every day, or exercising 2 xs/day)  
-            'extra_active':1.9 # Extra active = BMR x 1.9 (hard exercise 2 or more times per day, or training for marathon, or triathlon, etc.
-        }
-         return int(round((self.get_bmr() * activity[self.activitylvl])))
+         return int(round((self.get_bmr() * self.activitymultiplier[self.activitylvl])))
 
      def weight_in_lbs(self):
          return convert_unit(self.weightkg,'kg','lb')
@@ -58,9 +67,12 @@ class Person:
                  return True
              else:
                  return False
-                 
+
      def increase_activitylvl(self):
-         pass
+         currentlevel = [k for k, v in self.activityrank.items() if v == self.activitylvl][0]
+         if int(currentlevel) <= 4:
+             self.activitylvl = self.activityrank[(int(currentlevel)+1)]
+
 
          
 
@@ -153,21 +165,17 @@ def get_activity_level():
         number = int(input("Please enter the number associated with your activity level: "))
     return activity[number]
 
-
-#----------------------------------------------------------------  
-# GET INPUT - GENERAL FUNCTION
-
-
 #----------------------------------------------------------------  
 
     
 if __name__ == "__main__":
    # make instance of person - gets info
    donovan = Person.get_user_input()
-   # for loop to get the calories needed at each weight (per week)
+   # get starter values
    thegoalweight = int(donovan.goal_weight_in_lbs())
    thestartweight = int(donovan.weight_in_lbs())
    weightperweek = 2
+   # logic
    counter = 0
    print("\n")
    print(f"* Your starting weight is: {thestartweight} lbs")
@@ -183,9 +191,19 @@ if __name__ == "__main__":
            donovan.gain_weight(weightperweek)
    elif thestartweight > thegoalweight:
        # lose weight
-       for weight in range(thegoalweight ,thestartweight,weightperweek):
-           counter += 1
-           weightendofweek = (int(donovan.weight_in_lbs())-weightperweek)
-           print(f"Week {counter}: {donovan.calculate_cals()} | Weight at the end of the week: {weightendofweek}")
-           donovan.lose_weight(weightperweek)
+        for weight in range(thegoalweight ,thestartweight,weightperweek):
+               if donovan.cals_to_low() == True:
+                   while donovan.cals_to_low() == True:
+                       if donovan.activitylvl == donovan.activityrank[5]:
+                           print("Your calories have gotten to low and you are already extra active. Please see a specialist as you may have a metabolic issue.")
+                           break
+                       else:
+                           donovan.increase_activitylvl()
+                           print(f"Your calories have gotten to low. To prevent eating to little you activity level has changed to {str(donovan.activitylvl.replace('_',' '))}")
+                           print("You will now need to do additional exercise to continue losing weight")
+               else:
+                   counter += 1
+                   weightendofweek = (int(donovan.weight_in_lbs())-weightperweek)
+                   print(f"Week {counter}: {donovan.calculate_cals()} | Weight at the end of the week: {weightendofweek}")
+                   donovan.lose_weight(weightperweek)
 
