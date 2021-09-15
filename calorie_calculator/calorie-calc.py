@@ -1,13 +1,23 @@
 # Calorie Calculator
 class Person:
-     def __init__(self, weightkg, heightcm, age, gender):
+     activitymultiplier={
+            'sedentary':1.2, # Sedentary = BMR x 1.2 (little or no exercise, desk job) 
+            'lightly_active':1.375,  # Lightly active = BMR x 1.375 (light exercise/ sports 1-3 days/week) 
+            'moderately_active':1.55, # Moderately active = BMR x 1.55 (moderate exercise/ sports 6-7 days/week) 
+            'very_active':1.725, # Very active = BMR x 1.725 (hard exercise every day, or exercising 2 xs/day)  
+            'extra_active':1.9 # Extra active = BMR x 1.9 (hard exercise 2 or more times per day, or training for marathon, or triathlon, etc.
+        }
+      
+     def __init__(self, weightkg, heightcm, age, gender,goalweightkg,activitylvl):
          self.weightkg = weightkg
          self.heightcm = heightcm
          self.age = age
          self.gender = gender
+         self.goalweightkg = goalweightkg
+         self.activitylvl = activitylvl
     
      def __str__(self):
-         return "This individual is a {age} year old {gender}. They are {heightcm:.2f} cm tall and weigh {weight:.2f} kg".format(age=self.age,gender=self.gender,heightcm=self.heightcm,weight=self.weightkg)
+         return "{age} year old {gender} who is {heightcm:.2f} cm's tall and weighs {weight:.2f} kg".format(age=self.age,gender=self.gender,heightcm=self.heightcm,weight=self.weightkg)
 
      def get_bmr(self):
          if self.gender == 'Male':
@@ -21,11 +31,23 @@ class Person:
 
      def lose_weight(self, ammount):
          self.weightkg -= (0.453592 * ammount) # 0.453592 kg is 1lb 
-         print('Lost {ammount} lbs'.format(ammount = ammount))
+         #print('- {ammount} lbs'.format(ammount = ammount))
 
      def gain_weight(self, ammount):
          self.weight += (0.453592 * ammount) # 0.453592 kg is 1lb 
-         print('Gained {ammount} lbs'.format(ammount = ammount))
+         #print('+ {ammount} lbs'.format(ammount = ammount))
+
+     def calculate_cals(self,changelbs,changetype):
+         if changetype.lower() == 'gain':
+             return int(round((self.get_bmr() * self.activitymultiplier[self.activitylvl]) + (changelbs*500) ))
+         elif changetype.lower() == 'lose':
+             return int(round((self.get_bmr() * self.activitymultiplier[self.activitylvl]) - (changelbs*500) ))
+
+     def weight_in_lbs(self):
+         return convert_unit(self.weightkg,'kg','lb')
+
+     def goal_weight_in_lbs(self):
+         return convert_unit(self.goalweightkg,'kg','lb')
 
      @classmethod
      def get_user_input(self):
@@ -33,8 +55,11 @@ class Person:
          weightkg = get_weightkg()
          age = get_age()
          gender = get_gender()
-         return self(weightkg,heightcm,age,gender)
-
+         goalweightkg = get_goal_weight()
+         activitylvl = get_activity_level()
+         return self(weightkg,heightcm,age,gender,goalweightkg,activitylvl)
+#----------------------------------------------------------------
+# UNIT CONVERTER
 def convert_unit(fromvalue,fromunit,tounit):
     # Height
     if fromunit == "ft" and tounit == "cm":
@@ -46,7 +71,10 @@ def convert_unit(fromvalue,fromunit,tounit):
     # Weight
     elif fromunit == "lb" and tounit == "kg":
         return float(fromvalue)/2.2046
-
+    elif fromunit == "kg" and tounit == "lb":
+        return float(fromvalue)/0.45359237
+#----------------------------------------------------------------
+# GET INPUT FOR CLASS OBJECT
 def get_heightcm():
     heightft = ''
     while heightft not in range(0,10):
@@ -79,22 +107,74 @@ def get_gender():
         else: 
             continue
 
-# get goal weight    
+def get_goal_weight():
+    # returns weight in kg
+    while True:
+        try:
+            goal_weight = int(input('What weight would you like to get to? (lbs): '))
+            goal_weight = convert_unit(goal_weight,'lb','kg')
+            return goal_weight #in kg
+        except:
+            print("Please enter a valid weight: example...140 ")
+            continue
+
+def get_activity_level():
+    activity={
+             1:'sedentary',
+             2:'lightly_active',
+             3:'moderately_active',
+             4:'very_active',
+             5:'extra_active'
+    }
+    print("\n")
+    print("1 - Sedentary / little or no exercise, desk job")
+    print("2 - Lightly active / light exercise/ sports 1-3 days/week")
+    print("3 - Moderately active / moderate exercise/ sports 6-7 days/week")
+    print("4 - Very active / hard exercise every day, or exercising 2 xs/day")
+    print("5 - Extra active / hard exercise 2 or more times per day, or training for marathon, or triathlon, etc.")
+    print("\n")
+    number = 0
+    while number not in range(1,6):
+        number = int(input("Please enter the number associated with your activity level: "))
+    return activity[number]
+
+def get_change_per_week():
+    change = ''
+    while change not in range(1,3):
+        change = int(input('How many lbs would you like to lose per week? (years): '))
+        if change not in range(1,3):
+            print("\t 1-2 lbs per week is considered a healthy ammount. Please change your awsner.")
+    return change
+
+#----------------------------------------------------------------  
 
     
 if __name__ == "__main__":
-    person1 = Person.get_user_input()
-    print(person1)
-    print(person1.get_bmr())
-    person1.lose_weight(10) 
-    print(person1.get_bmr())
-
-
    # make instance of person - gets info
-
-   # get goal weight
-
-   # for loop to get the calories needed at each weight (per week)
-
-
+   donovan = Person.get_user_input()
+   # get starter values
+   thegoalweight = int(donovan.goal_weight_in_lbs())
+   thestartweight = int(donovan.weight_in_lbs())
+   weightperweek = get_change_per_week()
+   # logic
+   counter = 0
+   print("\n")
+   print(f"* Your starting weight is: {thestartweight} lbs")
+   print(f"* Your starting activity level is: {str(donovan.activitylvl.replace('_',' '))}")
+   if thestartweight == thegoalweight:
+       print(f"Congrats you have reached your goal weight of {thegoalweight} lbs")
+   elif thestartweight < thegoalweight:
+       # gain weight 
+       for weight in range(thegoalweight ,thestartweight,weightperweek):
+           counter += 1
+           weightendofweek = (int(donovan.weight_in_lbs())+weightperweek)
+           print(f"Week {counter}: {donovan.calculate_cals(weightperweek,'gain')} | Weight at the end of the week: {weightendofweek}")
+           donovan.gain_weight(weightperweek)
+   elif thestartweight > thegoalweight:
+       # lose weight
+        for weight in range(thegoalweight ,thestartweight,weightperweek):
+                   counter += 1
+                   weightendofweek = (int(donovan.weight_in_lbs())-weightperweek)
+                   print(f"Week {counter}: {donovan.calculate_cals(weightperweek,'lose')} | Weight at the end of the week: {weightendofweek}")
+                   donovan.lose_weight(weightperweek)
 
