@@ -1,11 +1,10 @@
 # Line Graph of Net Worth Over Time
 
 ## Important Notes
-* This is just a simple line graph which was created using the Matplotlib library
 * This just paints a simple picture. There are of course other factors to someones net worth over time such as: different investment returns, increasing/decreasing income over time, large purchases, home equity
 
 # What is this:
-This is a simple script that calculates a persons net worth over time in 1 year intervals. 
+This is a script that calculates a persons net worth over time in 1 year intervals using the Matplotlib library. 
 
 ## How it works:
 1. First it creates a person object based on some passed in arguments:
