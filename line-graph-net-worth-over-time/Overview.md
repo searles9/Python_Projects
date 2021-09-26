@@ -1,7 +1,7 @@
 # Line Graph of Net Worth Over Time
 
 ## Important Notes
-* This just paints a simple picture. There are of course other factors to someones net worth over time such as: different investment returns, increasing/decreasing income over time, large purchases, home equity
+* This only paints a simple picture. Of course, there are other factors that contribute to someones net worth over time. These factors can inlcude: different investment returns, increasing/decreasing income over time, large purchases, and home equity. 
 
 # What is this:
 This is a script that calculates a persons net worth over time in 1 year intervals using the Matplotlib library. 
@@ -17,7 +17,7 @@ person1 = Person(0,0,3664,500,2000) # 65k after tax GA - investing 0 a month
 * argument 4: monthly invesments (it assumes only an 8% return every year) | (500 a month in the example above)
 * argument 5: monthly expenses | (2000 a month in the example above)<br><br>
 
-2. For each person it calculates thier data and plots it on a graph. You can see in this code snippet, the number of years calculated is 30:
+2. For each person. it calculates thier data and plots it on a graph. You can see in this code snippet the number of years calculated is 30:
 ```
 for person in peoplelist:
         (xlist,ylist) = getplotvals(person,30)
@@ -42,10 +42,10 @@ peoplelist = [person1,person2,person3,person4]
 #### Get data:
 * Result:
 * ![Graph](./images/4_people_graph.png)
-* Someone making 65k a year with expenses around 2k a month (roomating) while only saving money will retire broke
-* Someone making 80k a year with expenses around 2.8k a month (1 bedroom apt) while only saving money will retire broke
-* Someone making 65k a year with expenses around 2k a month (roomating) while investing and getting 8% a year returns will retire with around 3.2 millon
-* Someone making 80k a year with expenses around 2.8k a month (1 bedroom apt) while investing and getting 8% a year returns will retire with around 3.6 millon
+* Someone who is making 65k a year with expenses totaling around 2k a month (roomating) while only saving money will retire broke
+* Someone who is making 80k a year with expenses totaling around 2.8k a month (1 bedroom apt) while only saving money will retire broke
+* Someone who is making 65k a year with expenses totaling around 2k a month (roomating) while investing and getting 8% a year returns will retire with around 3.2 millon
+* Someone who is making 80k a year with expenses totaling around 2.8k a month (1 bedroom apt) while investing and getting 8% a year returns will retire with around 3.6 millon
 # How to use this:
 ```
 python networthgraph.py
