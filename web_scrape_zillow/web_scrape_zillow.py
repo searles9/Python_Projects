@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import time
+import csv
 
 class ZillowScraper():
     results = []
@@ -23,7 +25,7 @@ class ZillowScraper():
 
     def fetch(self, url, params):
         response=requests.get(url, headers=self.headers, params=params)
-        print(response)
+        print(response.status_code)
         return response
     
     def parse(self, response):
@@ -38,6 +40,7 @@ class ZillowScraper():
                 script_json = json.loads(script.contents[0])
                 self.results.append({
                     'name': script_json['name'],
+                    'price': card.find('div', {'list-card-price'}).text,
                     'floorSize': script_json['floorSize']['value'],
                     'type': script_json['@type'],
                     'street': script_json['address']['streetAddress'],
@@ -48,21 +51,28 @@ class ZillowScraper():
                     'longitude': script_json['geo']['longitude'],
                     'url':  script_json['url']
                 })
-        print(self.results)
-               # * name 
-               # * floor size
-               # * url
-               # * geo
-               # * @type -sfr
+
     def run(self):
         url = 'https://www.zillow.com/atlanta-ga/'
-        params = {
-             'searchQueryState': '{"pagination":{"currentPage": 1},"usersSearchTerm":"Atlanta, GA","mapBounds":{"west":-84.70914395410156,"east":-84.25183804589844,"south":33.53579604128204,"north":34.01181257012808},"regionSelection":[{"regionId":37211,"regionType":6}],"isMapVisible":true,"filterState":{"sort":{"value":"globalrelevanceex"},"ah":{"value":true}},"isListVisible":true,"mapZoom":11}'
-        }
-        res = self.fetch(url, params)
-        self.parse(res.text)
+        for page in range(1,10):
+            params = {
+             'searchQueryState': '{"pagination":{"currentPage": %s},"usersSearchTerm":"Atlanta, GA","mapBounds":{"west":-84.70914395410156,"east":-84.25183804589844,"south":33.53579604128204,"north":34.01181257012808},"regionSelection":[{"regionId":37211,"regionType":6}],"isMapVisible":true,"filterState":{"sort":{"value":"globalrelevanceex"},"ah":{"value":true}},"isListVisible":true,"mapZoom":11}' %page
+            }
+            res = self.fetch(url, params)
+            self.parse(res.text)
+            time.sleep(2)
+        return self.results
+        #self.to_csv()
+    
 
+def results_to_csv(results, filename):
+        with open('zillow.csv', 'w') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=results[0].keys())
+            writer.writeheader
+            for row in results:
+                writer.writerow(row)
 
 if __name__ == "__main__":
     scraper = ZillowScraper()
-    scraper.run()
+    scrape_results = scraper.run()
+    results_to_csv(scrape_results,'zillow.csv')
