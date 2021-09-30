@@ -1,7 +1,0 @@
-{'@type': 'SingleFamilyResidence',
- '@context': 'http://schema.org', 
- 'name': '3306 Pine Heights Dr NE, Atlanta, GA 30324', 
- 'floorSize': {'@type': 'QuantitativeValue', '@context': 'http://schema.org', 'value': '1,504'}, 
- 'address': {'@type': 'PostalAddress', '@context': 'http://schema.org', 'streetAddress': '3306 Pine Heights Dr NE', 'addressLocality': 'Atlanta', 'addressRegion': 'GA', 'postalCode': '30324'}, 
- 'geo': {'@type': 'GeoCoordinates', '@context': 'http://schema.org', 'latitude': 33.828737, 'longitude': -84.355441},
-  'url': 'https://www.zillow.com/homedetails/3306-Pine-Heights-Dr-NE-Atlanta-GA-30324/55017283_zpid/'}

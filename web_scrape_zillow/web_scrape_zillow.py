@@ -62,7 +62,6 @@ class ZillowScraper():
             self.parse(res.text)
             time.sleep(2)
         return self.results
-        #self.to_csv()
     
 
 def results_to_csv(results, filename):
