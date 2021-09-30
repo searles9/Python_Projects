@@ -9,7 +9,11 @@
 * in the dev tools there is a searchQueryState paramaters section - grab that
 * format as a dictionary 
 
+#### BS4
+* response.text
+* content.prettify()
 
+.contents lets you see direct child elements
 
 
 https://www.zillow.com/atlanta-ga/
