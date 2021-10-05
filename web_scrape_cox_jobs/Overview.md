@@ -22,4 +22,6 @@ Jobs.run(3,'job_details.csv')
 ```
 python web_scrape_cox_jobs.py
 ```
+* The script opens a web browser and starts scanning the pages for the specific html/css elements
+* Once the script completes it closes the browser 
 * The CSV file will be outputed to the same directory that the script is in
