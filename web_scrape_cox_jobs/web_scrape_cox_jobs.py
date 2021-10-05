@@ -35,7 +35,7 @@ class JobScraper():
         job_details_df.to_csv(filename, index=False)
 
     def run(self,pages,filename,base_url):
-        jobs = self.get_jobs(pages)
+        jobs = self.get_jobs(pages,base_url)
         self.to_csv(filename)
 
 if __name__ == "__main__":
