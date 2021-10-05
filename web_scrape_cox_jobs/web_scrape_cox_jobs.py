@@ -7,10 +7,10 @@ import pandas as pd
 class JobScraper():
     job_details = []
     
-    def get_jobs(self,pages):
+    def get_jobs(self,pages,base_url):
         driver = webdriver.Chrome()
-        for page in range(1,pages,1):
-            search_query = "https://jobs.coxenterprises.com/job-search-results/?level=Individual%20Contributor&employment_type=Full-time&location=Norcross%2C%20GA%2C%20US&latitude=33.906&longitude=-84.184&radius=25&pg=" + str(page)
+        for page in range(1,(pages+1),1):
+            search_query = str(base_url) + "&pg=" + str(page)
             driver.get(search_query)
             time.sleep(5)
             job_list = driver.find_elements_by_class_name('job-innerwrap')
@@ -34,10 +34,11 @@ class JobScraper():
         job_details_df.columns = ['title', 'location', 'division', 'url']
         job_details_df.to_csv(filename, index=False)
 
-    def run(self,pages,filename):
+    def run(self,pages,filename,base_url):
         jobs = self.get_jobs(pages)
         self.to_csv(filename)
 
 if __name__ == "__main__":
     Jobs = JobScraper()
-    Jobs.run(42,'job_details.csv')
+    my_url = "https://jobs.coxenterprises.com/job-search-results/?level=Individual%20Contributor&employment_type=Full-time&location=Norcross%2C%20GA%2C%20US&latitude=33.906&longitude=-84.184&radius=25"
+    Jobs.run(20,'job_details.csv',my_url)

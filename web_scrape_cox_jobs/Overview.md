@@ -18,8 +18,10 @@ search_query = "https://jobs.coxenterprises.com/job-search-results/?level=Indivi
 * Once you create the class object you have to specify the following:
 * a) how many pages to scan
 * b) the filename you want to use for the CSV file
+* c) specify the base URL. The base url should not contain "pg=" at the end. The base url is generally page 1 of the search results.
 ```
-Jobs.run(42,'job_details.csv')
+the_url = "https://jobs.coxenterprises.com/job-search-results/?level=Individual%20Contributor&employment_type=Full-time&location=Norcross%2C%20GA%2C%20US&latitude=33.906&longitude=-84.184&radius=25"
+Jobs.run(42,'job_details.csv', the_url)
 ```
 ### Run the script:
 ```
