@@ -9,17 +9,20 @@
 
 # What is this:
 * This is a script that can be used to webscrape the Cox Enterprises job search results site: https://jobs.coxenterprises.com/job-search-results/
-* There are dozens of jobs availible on the site, however the site only shows 10 per page. This script scans the pages you specify, grabs the job title and url and then outputs that data to a CSV file.
+* There are dozens of jobs availible on the site, however the site only shows 10 per page. This script scans the pages you specify, grabs the job title and url and then outputs that data to an excel file.
 # How to use this:
-### Specify values
-* Once you create the class object you have to specify the following:
-* a) how many pages to scan
-* b) the filename you want to use for the CSV file
-* c) specify the base URL. The base url should not contain "pg=" at the end. The base url is generally page 1 of the search results.
+* create an instance of the class:
 ```
-the_url = "https://jobs.coxenterprises.com/job-search-results/?level=Individual%20Contributor&employment_type=Full-time&location=Norcross%2C%20GA%2C%20US&latitude=33.906&longitude=-84.184&radius=25"
-Jobs.run(42,'job_details.csv', the_url)
+Jobs = JobScraper()
 ```
+* use the .run() method to gather the data
+* run (filename, base_url)
+* the base url should be grabbed from the first page of the search results and should not contain "&pg=" at the end
+```
+my_url = "https://jobs.coxenterprises.com/job-search-results/?keyword=lead%20security&category[]=Information%20Technology&level=Individual%20Contributor&employment_type=Full-time&location=Norcross%2C%20GA%2C%20US&latitude=33.906&longitude=-84.184&radius=25"
+    Jobs.run('job_details.xlsx', my_url)
+```
+
 ### Run the script:
 ```
 python web_scrape_cox_jobs.py
@@ -31,5 +34,10 @@ python web_scrape_cox_jobs.py
 Collected 10 results from page 1
 Collected 10 results from page 2
 Collected 10 results from page 3
+Collected 10 results from page 4
+Collected 3 results from page 5
+Gathered jobs from 5 pages
+         Adding data to a new excel document
+         You can see the job results in this file: - job_details.xlsx
 ```
-* The CSV file will be outputed to the same directory that the script is in
+* The excel file will be outputed to the same directory that the script is in
