@@ -29,19 +29,19 @@ class JobScraper():
                     # Saving into job_details
                     self.job_details.append(job_info)
             else: 
-                print(f"Gathered jobs from {(page - 1)} pages")
+                print(f"***Gathered jobs from {(page - 1)} pages")
                 break
             page += 1
         driver.quit()
 
     def to_excel(self,filename):
-        print(f"\t Adding data to a new excel document")
+        print("***Adding data to a new excel document")
         df = pd.DataFrame(self.job_details)
         df.columns = ['title', 'location', 'division', 'url']
         writer = pd.ExcelWriter(filename, engine='xlsxwriter')
         df.to_excel(writer, sheet_name='All-Jobs')
         writer.save()
-        print(f"\t You can see the job results in this file: - {filename}")
+        print(f"***You can see the job results in this file: - {filename}")
 
     def run(self,filename,base_url):
         jobs = self.get_jobs(base_url)
