@@ -1,6 +1,8 @@
 # Web Scraping Cox Enterprises Job Website
 ***
 ***
+# !!! THIS PAGE IS OUT OF DATE AND NEEDS TO BE UPDATED !!!
+
 # Important notes:
 * The script is relativly slow. It loads the site and its dynamic JS content, and then scans the page for the specific HTML elements.
 * I have only tested this on Windows. There might be issues on other platforms due to the chrome driver it uses.
