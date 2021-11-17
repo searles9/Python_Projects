@@ -39,16 +39,10 @@ class JobScraper():
         df = pd.DataFrame(self.job_details)
         df.columns = ['title', 'location', 'division', 'url']
         writer = pd.ExcelWriter(filename, engine='xlsxwriter')
-        df.to_excel(writer, sheet_name='All-Jobs')
+        df.to_excel(writer, sheet_name='All-Jobs', index=False)
         writer.save()
         print(f"***You can see the job results in this file: - {filename}")
 
     def run(self,filename,base_url):
         jobs = self.get_jobs(base_url)
         self.to_excel(filename)
-
-
-if __name__ == "__main__":
-    Jobs = JobScraper()
-    my_url = "https://jobs.coxenterprises.com/job-search-results/?keyword=lead%20security&category[]=Information%20Technology&level=Individual%20Contributor&employment_type=Full-time&location=Norcross%2C%20GA%2C%20US&latitude=33.906&longitude=-84.184&radius=25"
-    Jobs.run('job_details.xlsx', my_url)
